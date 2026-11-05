@@ -174,12 +174,12 @@
     <!-- Hero Section pe tot ecranul -->
     <section id="home" class="relative w-full min-h-screen flex flex-col items-center justify-start pt-28 md:pt-36">
       
-      <!-- Titlu (Fără gradient, culoare simplă cu tranziție la alb/negru) -->
+      <!-- Titlu -->
       <h1 id="hero-title" class="fade-init text-5xl md:text-8xl font-black tracking-tight text-center z-20 text-brand-darkblue dark:text-brand-cyan mb-6 px-4">
         Razvan SRL
       </h1>
 
-      <!-- Container Imagine & Layere cu dimensiune pe tot ecranul (Full Width/Height) -->
+      <!-- Container Imagine & Layere cu dimensiune pe tot ecranul -->
       <div id="parallax-container" class="relative w-full h-[70vh] md:h-[78vh] px-2 md:px-8 flex justify-center">
         
         <!-- Layer Colorat Spate 2 -->
@@ -188,7 +188,7 @@
         <!-- Layer Colorat Spate 1 -->
         <div id="layer-1" class="hero-layer-1 img-anim-init absolute -top-3 w-[99.5%] h-full bg-gradient-to-r from-brand-cyan via-brand-turquoise to-brand-blue opacity-80 z-5"></div>
 
-        <!-- Imaginea Principala Curvata pe tot ecranul (home.webp) -->
+        <!-- Imaginea Principala Curvata pe tot ecranul -->
         <div id="hero-img-box" class="hero-curved-img img-anim-init relative w-full h-full z-10 shadow-2xl bg-slate-800">
           <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80" alt="Home preview" class="w-full h-full object-cover">
         </div>
@@ -241,7 +241,7 @@
       </p>
     </section>
 
-    <!-- ================= SECTIUNE FORMULAR CONTACT ================= -->
+    <!-- ================= SECTIUNE FORMULAR CONTACT (Formspree Integrat) ================= -->
     <section id="contact-form-section" class="w-full max-w-3xl px-6 pb-28 z-30">
       <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-3xl p-6 md:p-10 shadow-2xl">
         <h2 class="text-3xl font-extrabold text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan via-brand-blue to-brand-turquoise">
@@ -251,7 +251,7 @@
           Trimite-ne un mesaj și îți vom răspunde în cel mai scurt timp posibil.
         </p>
 
-        <form id="contact-form" action="mailto:greenscreenforbrawlstars@gmail.com" method="post" enctype="text/plain" onsubmit="handleFormSubmit(event)" class="space-y-6">
+        <form id="contact-form" action="https://formspree.io/f/mljjvpow" method="POST" class="space-y-6">
           
           <!-- Nume și Prenume -->
           <div>
@@ -264,6 +264,21 @@
               name="Nume_Prenume" 
               required
               placeholder="ex: Popescu Răzvan" 
+              class="w-full px-5 py-3.5 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-cyan text-slate-900 dark:text-white transition-all text-sm md:text-base"
+            >
+          </div>
+
+          <!-- Email Expeditor -->
+          <div>
+            <label for="email" class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">
+              Adresa ta de Email <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              name="_replyto" 
+              required
+              placeholder="nume@domeniu.com" 
               class="w-full px-5 py-3.5 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-cyan text-slate-900 dark:text-white transition-all text-sm md:text-base"
             >
           </div>
@@ -311,7 +326,7 @@
             </label>
           </div>
 
-          <!-- Buton Trimitere (Desactivat până la bifare) -->
+          <!-- Buton Trimitere (Dezactivat până la bifare) -->
           <button 
             type="submit" 
             id="submit-btn" 
@@ -499,7 +514,7 @@
       status.innerText = mesaj;
     }
 
-    // --- 5. LOGICĂ FORMULAR CONTACT & VALIDARE CHECKBOX ---
+    // --- 5. LOGICĂ VALIDARE CHECKBOX PENTRU FORMULAR ---
     function toggleSubmitButton() {
       const checkbox = document.getElementById('terms-checkbox');
       const submitBtn = document.getElementById('submit-btn');
@@ -513,10 +528,6 @@
         submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
         submitBtn.classList.remove('hover:shadow-lg', 'hover:shadow-brand-cyan/30', 'active:scale-95');
       }
-    }
-
-    function handleFormSubmit(event) {
-      // Opțional: Aici se pot adăuga verificări suplimentare sau trimitere prin API
     }
   </script>
 </body>
