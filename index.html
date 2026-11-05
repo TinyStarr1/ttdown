@@ -1,359 +1,408 @@
 <!DOCTYPE html>
-<html lang="ro" class="scroll-smooth">
+<html lang="ro" class="h-full">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Răzvan SRL - Acasă</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Tailwind Config for Custom Colors -->
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'brand-cyan': '#00FFFF',
-                        'brand-blue': '#0000FF',
-                        'brand-darkblue': '#00008B',
-                        'brand-turquoise': '#40E0D0',
-                    },
-                    fontFamily: {
-                        'sans': ['Montserrat', 'sans-serif'],
-                    }
-                }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Razvan SRL</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Google: Montserrat (suport complet diacritice și text gros) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            montserrat: ['Montserrat', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              cyan: '#00f2fe',
+              blue: '#4facfe',
+              darkblue: '#090979',
+              turquoise: '#00d2ff',
+              navy: '#020024'
             }
+          },
+          animation: {
+            'lava': 'lava 10s ease infinite',
+            'pulse-ring': 'pulseRing 2s cubic-bezier(0.45, 0, 0.55, 1) infinite',
+          },
+          keyframes: {
+            lava: {
+              '0%, 100%': { 'background-position': '0% 50%' },
+              '50%': { 'background-position': '100% 50%' },
+            },
+            pulseRing: {
+              '0%': { transform: 'scale(0.8)', opacity: '0.8' },
+              '50%': { transform: 'scale(1.4)', opacity: '0.3' },
+              '100%': { transform: 'scale(0.8)', opacity: '0.8' },
+            }
+          }
         }
-    </script>
+      }
+    }
+  </script>
 
-    <!-- Google Fonts for Diacritics Support -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* Stiluri custom pentru animația de scroll cu inerție & curbare */
+    .hero-curved-img {
+      clip-path: ellipse(120% 100% at 50% 0%);
+      will-change: transform;
+    }
     
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    .hero-layer-1 {
+      clip-path: ellipse(130% 100% at 50% 0%);
+      will-change: transform;
+    }
 
-    <style>
-        /* Lava Accents on left and right */
-        .lava-border {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            width: 12px;
-            z-index: 100;
-            background: linear-gradient(180deg, #00FFFF, #40E0D0, #0000FF, #00008B, #00FFFF);
-            background-size: 100% 400%;
-            animation: flowLava 8s ease-in-out infinite;
-            pointer-events: none;
-        }
-        .lava-left { left: 0; }
-        .lava-right { right: 0; }
+    .hero-layer-2 {
+      clip-path: ellipse(140% 100% at 50% 0%);
+      will-change: transform;
+    }
 
-        @keyframes flowLava {
-            0% { background-position: 0% 0%; }
-            50% { background-position: 0% 100%; }
-            100% { background-position: 0% 0%; }
-        }
+    /* Linia animată tip Lava Torch pe margini */
+    .lava-border {
+      background: linear-gradient(180deg, #00f2fe, #4facfe, #090979, #00d2ff, #00f2fe);
+      background-size: 200% 200%;
+    }
 
-        /* Pulse Loading Animation */
-        .loader-ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 4px solid #00FFFF;
-            animation: pulseRing 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-        }
-        .loader-ring:nth-child(2) { animation-delay: 0.6s; border-color: #40E0D0; }
-        .loader-ring:nth-child(3) { animation-delay: 1.2s; border-color: #0000FF; }
+    /* Animații de fade & poziție inițială */
+    .fade-init {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1.2s ease-out, transform 1.2s ease-out, color 1s ease;
+    }
 
-        @keyframes pulseRing {
-            0% { width: 80px; height: 80px; opacity: 1; }
-            100% { width: 300px; height: 300px; opacity: 0; }
-        }
+    .fade-in-active {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        /* Hero Curved Bottom and Setup */
-        .hero-container {
-            position: relative;
-            height: 100vh;
-            overflow: hidden;
-            /* Curved bottom effect */
-            clip-path: ellipse(150% 100% at 50% 0%);
-        }
+    .img-anim-init {
+      opacity: 0;
+      transform: translateY(100px);
+      transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
-        /* Custom Text Gradient */
-        .text-gradient {
-            background-image: linear-gradient(to right, #00FFFF, #0000FF);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            transition: all 1.5s ease-in-out;
-        }
+    .img-anim-active {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        /* For the smooth solid color transition */
-        .text-solid-light { color: #000000 !important; background-image: none !important; }
-        .text-solid-dark { color: #ffffff !important; background-image: none !important; }
-
-        /* Animation utilities */
-        .fade-in { animation: fadeIn 2s forwards; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        .slide-up-bg { animation: slideUpBg 2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes slideUpBg { 
-            from { transform: scale(1.1) translateY(50px); opacity: 0; } 
-            to { transform: scale(1) translateY(0); opacity: 1; } 
-        }
-
-        /* Fix layout for borders */
-        body { padding-left: 12px; padding-right: 12px; }
-    </style>
+    /* Fade-out pentru ecranul de incarcare */
+    .loader-fade-out {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease-out;
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-500 overflow-x-hidden">
+<body class="bg-gray-50 dark:bg-slate-950 text-gray-800 dark:text-gray-100 font-montserrat transition-colors duration-300 h-full overflow-x-hidden">
 
-    <!-- Lava Side Borders -->
-    <div class="lava-border lava-left"></div>
-    <div class="lava-border lava-right"></div>
+  <!-- ================= ECRAN ÎNCĂRCARE (LOADER) ================= -->
+  <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950 transition-opacity">
+    <div class="relative flex items-center justify-center w-64 h-64">
+      
+      <!-- Inele colorate mai groase cu bordura de 8px (border-8) ce pulseaza -->
+      <div class="absolute inset-0 rounded-full border-8 border-brand-cyan animate-pulse-ring opacity-75"></div>
+      <div class="absolute inset-2 rounded-full border-8 border-brand-blue animate-pulse-ring opacity-60" style="animation-delay: 0.4s;"></div>
+      <div class="absolute inset-4 rounded-full border-8 border-brand-turquoise animate-pulse-ring opacity-40" style="animation-delay: 0.8s;"></div>
 
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-950 transition-opacity duration-1000">
-        <div class="relative flex items-center justify-center">
-            <div class="loader-ring"></div>
-            <div class="loader-ring"></div>
-            <div class="loader-ring"></div>
-            <!-- Temporary Logo for Loader -->
-            <div class="z-10 text-3xl font-black tracking-tighter text-brand-darkblue dark:text-brand-cyan">
-                RĂZVAN<span class="text-brand-turquoise">SRL</span>
-            </div>
+      <!-- Logo Central -->
+      <div class="relative z-10 w-24 h-24 bg-gradient-to-tr from-brand-darkblue to-brand-cyan rounded-2xl p-1 shadow-2xl flex items-center justify-center transform hover:scale-105 transition-transform">
+        <div class="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center border border-white/10">
+          <span class="text-3xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-turquoise">R</span>
         </div>
-    </div>
+      </div>
 
-    <!-- Theme Toggle & Header -->
-    <nav class="fixed top-0 left-0 right-0 z-40 px-8 py-6 flex justify-between items-center opacity-0 transition-opacity duration-1000" id="main-nav">
-        <div class="text-xl font-bold tracking-widest invisible">RSRL</div> <!-- Placeholder to balance flex -->
-        <button id="theme-toggle" class="p-3 rounded-full bg-white/20 dark:bg-black/20 backdrop-blur-md shadow-lg border border-brand-cyan/30 hover:scale-110 transition-transform cursor-pointer">
-            <i id="theme-icon" class="fa-solid fa-moon text-brand-darkblue dark:text-brand-cyan text-xl"></i>
-        </button>
-    </nav>
+    </div>
+  </div>
+
+  <!-- ================= BORDURI ANIMATE LAVA TORCH (STÂNGA/DREAPTA) ================= -->
+  <div class="fixed top-0 left-0 w-3 h-full lava-border animate-lava z-40 hidden md:block shadow-[0_0_15px_rgba(0,242,254,0.5)]"></div>
+  <div class="fixed top-0 right-0 w-3 h-full lava-border animate-lava z-40 hidden md:block shadow-[0_0_15px_rgba(0,242,254,0.5)]"></div>
+
+  <!-- ================= BOTON COMUTARE DARK/LIGHT MODE ================= -->
+  <button id="theme-toggle" class="fixed top-6 right-6 md:right-10 z-40 p-3 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md shadow-lg border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:scale-110 transition-transform">
+    <!-- Iconita Luna -->
+    <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+    </svg>
+    <!-- Iconita Soare -->
+    <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+    </svg>
+  </button>
+
+  <!-- ================= CONTINUT PRINCIPAL ================= -->
+  <main class="min-h-screen flex flex-col items-center">
 
     <!-- Hero Section -->
-    <header class="hero-container bg-white dark:bg-gray-900 relative flex items-center justify-center">
+    <section class="relative w-full min-h-[90vh] flex flex-col items-center justify-start pt-20 overflow-hidden">
+      
+      <!-- Titlu (Fără gradient, culoare simplă cu tranziție la alb/negru) -->
+      <h1 id="hero-title" class="fade-init text-6xl md:text-8xl font-black tracking-tight text-center z-20 text-brand-darkblue dark:text-brand-cyan mb-8">
+        Razvan SRL
+      </h1>
+
+      <!-- Container Imagine & Layere cu curbura si inertie -->
+      <div id="parallax-container" class="relative w-full max-w-6xl mt-4 px-4 flex justify-center">
         
-        <!-- Colored Layers underneath the image for animation -->
-        <div class="parallax-layer w-full h-[120%] absolute top-0 bg-brand-cyan/20 z-0 opacity-0" id="layer1" data-speed="0.2"></div>
-        <div class="parallax-layer w-full h-[120%] absolute top-0 bg-brand-blue/20 z-0 opacity-0 delay-100" id="layer2" data-speed="0.4"></div>
+        <!-- Layer Colorat Spate 2 -->
+        <div id="layer-2" class="hero-layer-2 img-anim-init absolute -top-6 w-[98%] h-[380px] md:h-[530px] bg-gradient-to-r from-brand-darkblue via-brand-blue to-brand-cyan opacity-50 z-0"></div>
+
+        <!-- Layer Colorat Spate 1 -->
+        <div id="layer-1" class="hero-layer-1 img-anim-init absolute -top-3 w-[99%] h-[370px] md:h-[520px] bg-gradient-to-r from-brand-cyan via-brand-turquoise to-brand-blue opacity-80 z-5"></div>
+
+        <!-- Imaginea Principala Curvata (home.webp) -->
+        <div id="hero-img-box" class="hero-curved-img img-anim-init relative w-full h-[360px] md:h-[500px] z-10 shadow-2xl overflow-hidden bg-slate-800">
+          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80" alt="Home preview" class="w-full h-full object-cover">
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= SECTIUNE DESCĂRCARE TIKTOK ================= -->
+    <section class="w-full max-w-4xl px-6 py-12 -mt-16 z-30">
+      <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-2xl">
+        <h2 class="text-3xl font-extrabold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-blue">
+          Descărcător TikTok fără Watermark
+        </h2>
+        <p class="text-center text-slate-600 dark:text-slate-400 mb-8 text-sm md:text-base">
+          Introdu link-ul videoclipului pentru a extrage fișierul MP4 direct la calitate originală.
+        </p>
+
+        <div class="flex flex-col md:flex-row gap-4 mb-6">
+          <input 
+            type="url" 
+            id="tiktok-url" 
+            placeholder="Lipește link-ul TikTok aici (ex: https://www.tiktok.com/@user/video/...)" 
+            class="flex-1 px-6 py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-cyan text-slate-900 dark:text-white transition-all"
+          >
+          <button 
+            onclick="descarcaTikTok()" 
+            class="px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-cyan via-brand-blue to-brand-darkblue text-white font-bold hover:shadow-lg hover:shadow-brand-cyan/30 active:scale-95 transition-all flex items-center justify-center gap-2"
+          >
+            <span>Descarcă</span>
+          </button>
+        </div>
+
+        <!-- Zona Afișare Rezultat / Eroare -->
+        <div id="tiktok-status" class="hidden text-center p-4 rounded-xl font-medium"></div>
+        <div id="tiktok-result" class="hidden mt-6 flex flex-col items-center">
+          <video id="tiktok-preview" controls class="w-full max-w-md rounded-2xl shadow-lg mb-4"></video>
+          <a id="tiktok-download-btn" target="_blank" download="tiktok-video.mp4" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-md transition-all">
+            Descarcă Fișierul Video (.MP4)
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Secțiune Placeholder Text -->
+    <section class="w-full max-w-4xl px-6 py-12 text-center z-20">
+      <h3 class="text-2xl font-bold mb-4">Secțiune de Conținut</h3>
+      <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+        Acesta este spațiul rezervat pentru textul și informațiile despre Razvan SRL. Aici vom adăuga detaliile dorite după finalizarea structurii vizuale.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER / BOTTOM ================= -->
+  <footer class="w-full bg-slate-900 text-slate-300 border-t border-slate-800 mt-auto z-20 relative">
+    <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Brand & Logo -->
+      <div class="flex flex-col items-start gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-tr from-brand-darkblue to-brand-cyan rounded-xl flex items-center justify-center text-white font-black text-xl">
+            R
+          </div>
+          <span class="text-2xl font-extrabold text-white">Razvan SRL</span>
+        </div>
+        <p class="text-sm text-slate-400">
+          Soluții moderne și servicii profesionale.
+        </p>
+      </div>
+
+      <!-- Linkuri Pagini -->
+      <div>
+        <h4 class="text-lg font-bold text-white mb-4">Navigare</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:text-brand-cyan transition-colors">Acasă</a></li>
+          <li><a href="#" class="hover:text-brand-cyan transition-colors">Despre Noi (În curând)</a></li>
+          <li><a href="#" class="hover:text-brand-cyan transition-colors">Servicii (În curând)</a></li>
+          <li><a href="#" class="hover:text-brand-cyan transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Informații Contact -->
+      <div>
+        <h4 class="text-lg font-bold text-white mb-4">Contact</h4>
+        <ul class="space-y-2 text-sm text-slate-400">
+          <li>📍 <span class="hover:text-white transition-colors">Adresă Sediu: Str. Principală Nr. 123</span></li>
+          <li>📞 <a href="tel:+40700000000" class="hover:text-brand-cyan transition-colors">+40 700 000 000</a></li>
+          <li>✉️ <a href="mailto:contact@razvansrl.ro" class="hover:text-brand-cyan transition-colors">contact@razvansrl.ro</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Copyright -->
+    <div class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
+      © 2026 Razvan SRL. Toate drepturile rezervate.
+    </div>
+  </footer>
+
+  <!-- ================= SCRIPTE JAVASCRIPT ================= -->
+  <script>
+    // --- 1. MANAGING THEME (DARK / LIGHT) ---
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+    // Verifică preferința salvată sau a browserului
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      lightIcon.classList.remove('hidden');
+    } else {
+      document.documentElement.classList.remove('dark');
+      darkIcon.classList.remove('hidden');
+    }
+
+    // Comutare manuală
+    themeToggleBtn.addEventListener('click', function() {
+      lightIcon.classList.toggle('hidden');
+      darkIcon.classList.toggle('hidden');
+
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
+    });
+
+    // --- 2. LOADER FADE OUT & ANIMAȚII DE START ---
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+      const title = document.getElementById('hero-title');
+      const imgBox = document.getElementById('hero-img-box');
+      const layer1 = document.getElementById('layer-1');
+      const layer2 = document.getElementById('layer-2');
+
+      // 1. Ascunde loaderul cu efect de Fade-Out după 2.5 secunde
+      setTimeout(() => {
+        loader.classList.add('loader-fade-out');
+
+        // 2. Animație Titlu (Fade in)
+        setTimeout(() => {
+          title.classList.add('fade-in-active');
+
+          // 3. Animație Imagine și Layere + Schimbare culoare Titlu
+          setTimeout(() => {
+            imgBox.classList.add('img-anim-active');
+            layer1.classList.add('img-anim-active');
+            layer2.classList.add('img-anim-active');
+
+            // Trece titlul la alb/negru simplu
+            title.classList.remove('text-brand-darkblue', 'dark:text-brand-cyan');
+            title.classList.add('text-slate-900', 'dark:text-white');
+          }, 600);
+
+        }, 300);
+
+      }, 2500);
+    });
+
+    // --- 3. EFECT DE INERȚIE / PARALLAX SMOOTH SWIPE ---
+    let targetScrollY = 0;
+    let currentScrollY = 0;
+    const ease = 0.08; // Viteza inerției (mai mic = mai lin)
+
+    const layer1 = document.getElementById('layer-1');
+    const layer2 = document.getElementById('layer-2');
+    const imgBox = document.getElementById('hero-img-box');
+
+    window.addEventListener('scroll', () => {
+      targetScrollY = window.scrollY;
+    });
+
+    function animateInertia() {
+      // Calculăm poziția cu inerție folosind LERP
+      currentScrollY += (targetScrollY - currentScrollY) * ease;
+
+      // Aplicăm mișcarea diferențiată pe layere
+      if (layer1 && layer2 && imgBox) {
+        layer2.style.transform = `translateY(${currentScrollY * 0.15}px)`;
+        layer1.style.transform = `translateY(${currentScrollY * 0.10}px)`;
+        imgBox.style.transform = `translateY(${currentScrollY * 0.04}px)`;
+      }
+
+      requestAnimationFrame(animateInertia);
+    }
+    animateInertia();
+
+    // --- 4. LOGICĂ EXTRASE VIDEO TIKTOK ---
+    async function descarcaTikTok() {
+      const input = document.getElementById('tiktok-url');
+      const status = document.getElementById('tiktok-status');
+      const resultDiv = document.getElementById('tiktok-result');
+      const preview = document.getElementById('tiktok-preview');
+      const downloadBtn = document.getElementById('tiktok-download-btn');
+
+      const url = input.value.trim();
+      if (!url) {
+        afiseazaStatus('Te rog să introduci un link TikTok valid.', 'bg-red-500/10 text-red-500');
+        return;
+      }
+
+      afiseazaStatus('Se procesează videoclipul... Te rugăm să aștepți.', 'bg-blue-500/10 text-brand-blue');
+      resultDiv.classList.add('hidden');
+
+      try {
+        // Folosim un proxy CORS pentru a putea descarca HTML-ul TikTok din browser
+        const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+        const response = await fetch(proxyUrl);
+        const data = await response.json();
         
-        <!-- Background Image (home.webp placeholder) -->
-        <div class="parallax-layer absolute inset-0 z-10 opacity-0" id="hero-bg" data-speed="0.6">
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-brand-darkblue/40 mix-blend-multiply dark:mix-blend-overlay z-10"></div>
-            <!-- REPLACEMENT NOTE: Change this placeholder URL to your 'home.webp' -->
-            <img src="home.webp" alt="Hero Background" class="w-full h-full object-cover object-center" />
-        </div>
+        const htmlText = data.contents;
 
-        <!-- Main Title -->
-        <div class="relative z-20 text-center px-4">
-            <h1 id="hero-title" class="text-5xl md:text-7xl lg:text-9xl font-black tracking-tight opacity-0">
-                <span class="text-gradient inline-block" id="title-text">RĂZVAN SRL</span>
-            </h1>
-        </div>
-    </header>
+        // Căutare link MP4 fără watermark în HTML-ul paginii
+        const regexVideo = /https:\/\/[^"]+\.mp4[^"]*/g;
+        const meciuri = htmlText.match(regexVideo);
 
-    <!-- Content Section -->
-    <main class="min-h-screen relative z-10 px-8 py-24 max-w-5xl mx-auto">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-5xl font-bold mb-6 text-brand-blue dark:text-brand-turquoise">Bun venit pe noul tău site!</h2>
-            <p class="text-lg md:text-xl leading-relaxed text-gray-600 dark:text-gray-300">
-                Acesta este spațiul tău creativ. Secțiunea de mai sus folosește efecte de paralaxă și inerție — observă cum imaginea și layerele de culoare se mișcă la viteze diferite atunci când dai scroll în jos și în sus.
-            </p>
-        </div>
-
-        <!-- Placeholder Content Boxes -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="p-8 rounded-3xl bg-white dark:bg-gray-900 shadow-xl border border-gray-100 dark:border-gray-800 hover:-translate-y-2 transition-transform duration-300">
-                <div class="w-12 h-12 rounded-full bg-brand-cyan/20 flex items-center justify-center mb-6">
-                    <i class="fa-solid fa-wand-magic-sparkles text-brand-darkblue dark:text-brand-cyan text-xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">Design Modern</h3>
-                <p class="text-gray-600 dark:text-gray-400">Designul este curat, adaptat pentru orice ecran, și integrează accentele tale de cyan, turcoaz și albastru.</p>
-            </div>
-            <div class="p-8 rounded-3xl bg-white dark:bg-gray-900 shadow-xl border border-gray-100 dark:border-gray-800 hover:-translate-y-2 transition-transform duration-300">
-                <div class="w-12 h-12 rounded-full bg-brand-blue/20 flex items-center justify-center mb-6">
-                    <i class="fa-solid fa-moon text-brand-darkblue dark:text-brand-cyan text-xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">Dark/Light Mode</h3>
-                <p class="text-gray-600 dark:text-gray-400">Site-ul detectează automat preferințele browser-ului tău, dar îți oferă și control manual din colțul dreapta sus.</p>
-            </div>
-        </div>
-        
-        <div class="mt-24 mb-10 text-center text-gray-500 italic">
-            Mai mult conținut poate fi adăugat aici după ce stabilim restul detaliilor.
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-100 dark:bg-gray-900 pt-16 pb-8 px-8 border-t border-gray-200 dark:border-gray-800 relative z-10 rounded-t-[3rem] mt-10">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-            
-            <!-- Logo & Brand -->
-            <div class="flex flex-col items-center md:items-start">
-                <div class="text-3xl font-black tracking-tighter text-brand-darkblue dark:text-brand-cyan mb-4">
-                    RĂZVAN<span class="text-brand-turquoise">SRL</span>
-                </div>
-                <p class="text-gray-500 dark:text-gray-400 text-center md:text-left">
-                    Inovație și profesionalism. Calitate înainte de toate.
-                </p>
-            </div>
-
-            <!-- Quick Links -->
-            <div class="flex flex-col items-center md:items-start">
-                <h4 class="text-xl font-bold mb-4 text-brand-blue dark:text-brand-turquoise">Link-uri utile</h4>
-                <ul class="space-y-3 text-gray-600 dark:text-gray-400 text-center md:text-left">
-                    <li><a href="#" class="hover:text-brand-cyan transition-colors">Acasă</a></li>
-                    <li><a href="#" class="hover:text-brand-cyan transition-colors">Despre Noi</a></li>
-                    <li><a href="#" class="hover:text-brand-cyan transition-colors">Servicii</a></li>
-                    <li><a href="#" class="hover:text-brand-cyan transition-colors">Portofoliu</a></li>
-                </ul>
-            </div>
-
-            <!-- Contact -->
-            <div class="flex flex-col items-center md:items-start">
-                <h4 class="text-xl font-bold mb-4 text-brand-blue dark:text-brand-turquoise">Contact</h4>
-                <ul class="space-y-4 text-gray-600 dark:text-gray-400 text-center md:text-left">
-                    <li class="flex items-center gap-3 justify-center md:justify-start">
-                        <i class="fa-solid fa-phone text-brand-cyan"></i>
-                        <a href="tel:+40700000000" class="hover:text-brand-cyan transition-colors">+40 700 000 000</a>
-                    </li>
-                    <li class="flex items-center gap-3 justify-center md:justify-start">
-                        <i class="fa-solid fa-envelope text-brand-cyan"></i>
-                        <a href="mailto:contact@razvansrl.ro" class="hover:text-brand-cyan transition-colors">contact@razvansrl.ro</a>
-                    </li>
-                    <li class="flex items-center gap-3 justify-center md:justify-start">
-                        <i class="fa-solid fa-location-dot text-brand-cyan"></i>
-                        <span>Strada Exemplu, Nr. 10, București, România</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 text-center text-gray-400 text-sm">
-            &copy; <span id="year"></span> Răzvan SRL. Toate drepturile rezervate.
-        </div>
-    </footer>
-
-    <!-- Logic Script -->
-    <script>
-        // Set Current Year in Footer
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // 1. Dark/Light Mode Logic
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const htmlElement = document.documentElement;
-
-        // Check system preference on load
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            htmlElement.classList.add('dark');
-            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        if (meciuri && meciuri.length > 0) {
+          const linkDirect = meciuri[0].replace(/\\u0026/g, '&'); // Decodare caractere speciale
+          
+          preview.src = linkDirect;
+          downloadBtn.href = linkDirect;
+          
+          afiseazaStatus('Videoclip extras cu succes!', 'bg-emerald-500/10 text-emerald-500');
+          resultDiv.classList.remove('hidden');
         } else {
-            htmlElement.classList.remove('dark');
-            themeIcon.classList.replace('fa-sun', 'fa-moon');
+          afiseazaStatus('Nu s-a putut extrage videoclipul. Verifică dacă link-ul este public sau încearcă alt videoclip.', 'bg-amber-500/10 text-amber-500');
         }
 
-        // Manual toggle
-        themeToggleBtn.addEventListener('click', function() {
-            if (htmlElement.classList.contains('dark')) {
-                htmlElement.classList.remove('dark');
-                localStorage.setItem('color-theme', 'light');
-                themeIcon.classList.replace('fa-sun', 'fa-moon');
-                updateTitleSolidColor(); // update title color dynamically
-            } else {
-                htmlElement.classList.add('dark');
-                localStorage.setItem('color-theme', 'dark');
-                themeIcon.classList.replace('fa-moon', 'fa-sun');
-                updateTitleSolidColor(); // update title color dynamically
-            }
-        });
+      } catch (err) {
+        console.error(err);
+        afiseazaStatus('A apărut o eroare la conexiune sau TikTok a blocat accesul extern.', 'bg-red-500/10 text-red-500');
+      }
+    }
 
-        // 2. Loading & Animation Sequence
-        document.addEventListener('DOMContentLoaded', () => {
-            const loader = document.getElementById('loading-screen');
-            const nav = document.getElementById('main-nav');
-            const heroTitle = document.getElementById('hero-title');
-            const titleText = document.getElementById('title-text');
-            const heroBg = document.getElementById('hero-bg');
-            const layer1 = document.getElementById('layer1');
-            const layer2 = document.getElementById('layer2');
-
-            // Set loading time (e.g., 2.5 seconds)
-            setTimeout(() => {
-                // Fade out loader
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 1000);
-
-                // Sequence 1: Show Title with fade (after 0.5s)
-                setTimeout(() => {
-                    heroTitle.classList.add('fade-in');
-                    nav.classList.remove('opacity-0');
-                    nav.classList.add('opacity-100');
-                }, 500);
-
-                // Sequence 2: Bring in background image and layers (after 2s)
-                setTimeout(() => {
-                    heroBg.classList.add('slide-up-bg');
-                    layer1.classList.add('slide-up-bg');
-                    layer2.classList.add('slide-up-bg');
-                }, 2000);
-
-                // Sequence 3: Change title from gradient to solid color (after 3.5s)
-                setTimeout(() => {
-                    updateTitleSolidColor(true); // force first update
-                }, 3500);
-
-            }, 2500);
-
-            function updateTitleSolidColor(isInitial = false) {
-                // Only run if the initial gradient phase is over (or forced)
-                if (isInitial || !titleText.classList.contains('text-gradient')) {
-                    titleText.classList.remove('text-gradient');
-                    if (htmlElement.classList.contains('dark')) {
-                        titleText.classList.remove('text-solid-light');
-                        titleText.classList.add('text-solid-dark');
-                    } else {
-                        titleText.classList.remove('text-solid-dark');
-                        titleText.classList.add('text-solid-light');
-                    }
-                }
-            }
-        });
-
-        // 3. Parallax & Inertia Scroll Effect
-        let currentScrollY = window.scrollY;
-        let targetScrollY = window.scrollY;
-
-        // Smooth scroll variables
-        const parallaxLayers = document.querySelectorAll('.parallax-layer');
-
-        window.addEventListener('scroll', () => {
-            targetScrollY = window.scrollY;
-        });
-
-        // Animation loop to create smooth inertia
-        function animateParallax() {
-            // Lerp (Linear Interpolation) for smoothness (Inertia effect)
-            currentScrollY += (targetScrollY - currentScrollY) * 0.1;
-
-            parallaxLayers.forEach(layer => {
-                const speed = parseFloat(layer.getAttribute('data-speed'));
-                // Move elements slightly up when scrolling down, based on speed
-                const yPos = currentScrollY * speed;
-                layer.style.transform = `translateY(${yPos}px)`;
-            });
-
-            requestAnimationFrame(animateParallax);
-        }
-        
-        // Start animation loop
-        animateParallax();
-    </script>
+    function afiseazaStatus(mesaj, clase) {
+      const status = document.getElementById('tiktok-status');
+      status.className = `text-center p-4 rounded-xl font-medium block ${clase}`;
+      status.innerText = mesaj;
+    }
+  </script>
 </body>
 </html>
